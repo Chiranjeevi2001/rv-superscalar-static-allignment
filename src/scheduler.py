@@ -139,7 +139,7 @@ def main():
         specification = json.load(spec_file)
     fetch_width = specification["Fetch Width"]
 
-    with open("test_o0.s", "r") as assembly_file:
+    with open("./input/test_o0.s", "r") as assembly_file:
         assembly_code = assembly_file.read()
 
     instructions = parse_instructions(assembly_code)
@@ -160,7 +160,7 @@ def main():
     print_rescheduled_instructions(rescheduled_instructions)
     
     # Write rearranged instructions to file
-    write_to_file("rearrangedInst.s", rescheduled_instructions)
+    write_to_file("./output/rearrangedInst.s", rescheduled_instructions)
     print("Instructions written to rearrangedInst.s file")
 if __name__ == "__main__":
     main()
