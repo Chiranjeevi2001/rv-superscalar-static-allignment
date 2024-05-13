@@ -1,0 +1,11 @@
+{
+    "Fetch Width": 6,
+    "Number of Stages": 5,
+    "Depth of Execution Stages": {
+        "Fetch": 1,
+        "Decode": 2,
+        "Execute": 2,
+        "Memory": 1,
+        "WriteBack": 1
+    }
+}
