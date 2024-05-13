@@ -1,1 +1,1 @@
-# rv-superscalar-static-allignment
+# rv-superscalar-static-alignment
