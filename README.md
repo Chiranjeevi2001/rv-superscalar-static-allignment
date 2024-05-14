@@ -2,7 +2,7 @@
 
 ## 1. Collecting Benchmark Workload
 
-Collect benchmark workload from open-source suits or from SPEC.
+Collect benchmark workload from open-source suits or from SPEC. Store the C file in the `./src/input/` directory with the name `test.c`
 
 ## 2. Cross Compiling C/C++ Source Workload 
 
