@@ -20,7 +20,7 @@ Cross-compile the C/C++ source workload to the RISCV architecture for Assembly c
 
 - Extract the contents of the file:
   ```bash
-  tar -xvf xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+  tar -xvzf xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
   ```
 
 - Add the path to the bin directory to the PATH environment variable:
@@ -49,7 +49,7 @@ riscv-none-elf-gcc -march=rv32i -mabi=ilp32 -Ofast -S test.c -o test_ofast.s
 
 ## 2.2. Verification with RISC-V Emulator
 
-Install the RISC-V emulator by running the following commands:
+Install the RISC-V emulator by running the following commands one after the other:
 
 ```bash
 git clone https://github.com/sysprog21/rv32emu
