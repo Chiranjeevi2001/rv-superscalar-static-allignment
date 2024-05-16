@@ -47,17 +47,42 @@ def find_dependencies(instructions):
 
 
 
-
-def group_instructions(instructions, fetch_width):
-    groups = [[] for _ in range(fetch_width)]
+def get_normal_and_branch_instructions(instructions):
+    ni = []
+    bi = []
     for instr in instructions:
         if instr.is_branch():
-            groups[-1].append(instr)
+            bi.append(instr)
         else:
-            for group in groups:
-                if len(group) < fetch_width:
-                    group.append(instr)
-                    break
+            ni.append(instr)
+    
+    return ni, bi
+
+
+def group_instructions(instructions, fetch_width):
+    ni, bi = get_normal_and_branch_instructions(instructions)
+    groups = []
+    n_index , b_index = 0, 0
+    group = []
+    for i in range(len(instructions)):
+        if len(group) == fetch_width-1:
+            if(b_index < len(bi)):
+                group.append(bi[b_index])
+                b_index += 1
+            else:
+                nop = Instruction("nop")
+                group.append(nop)
+            groups.append(group)
+            group = []
+        else:
+            if(n_index < len(ni)):
+                group.append(ni[n_index])
+                n_index += 1
+            else:
+                nop = Instruction("nop")
+                group.append(nop)
+    if group:
+        groups.append(group)
     return groups
 
 
@@ -115,19 +140,20 @@ def reschedule_instructions(groups, instructions):
                         if dep_position >= 0:
                             # Insert no-op instructions before the current instruction
                             for _ in range(dep_position + 1, len(rescheduled_instructions)):
-                                rescheduled_instructions.append(Instruction("noop"))
+                                rescheduled_instructions.append(Instruction("nop"))
 
     return rescheduled_instructions
 
-def print_rescheduled_instructions(rescheduled_instructions):
-    print("\nRescheduled Instructions:")
-    for instr in rescheduled_instructions:
-        print(instr.line)
+# def print_rescheduled_instructions(rescheduled_instructions):
+#     print("\nRescheduled Instructions:")
+#     for instr in rescheduled_instructions:
+#         print(instr.line)
 
-def write_to_file(filename, instructions):
+def write_to_file(filename, grouped_instructions):
     with open(filename, "w") as file:
-        for instr in instructions:
-            file.write(instr.line + "\n")
+        for group in grouped_instructions:
+            for instr in group:
+                file.write(instr.line + "\n")
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -156,11 +182,11 @@ def main():
     grouped_instructions = group_instructions(instructions, fetch_width)
     print_grouped_instructions(grouped_instructions)
 
-    rescheduled_instructions = reschedule_instructions(grouped_instructions, instructions)
-    print_rescheduled_instructions(rescheduled_instructions)
+    # rescheduled_instructions = reschedule_instructions(grouped_instructions, instructions)
+    # print_rescheduled_instructions(rescheduled_instructions)
     
     # Write rearranged instructions to file
-    write_to_file("./output/rearrangedInst.s", rescheduled_instructions)
+    write_to_file("./output/rearrangedInst.s", grouped_instructions)
     print("Instructions written to rearrangedInst.s file")
 if __name__ == "__main__":
     main()
